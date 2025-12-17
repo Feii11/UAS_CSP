@@ -69,29 +69,37 @@ export default function DashboardPage() {
   if (user) {
     return (
         <div className={styles.container}>
-        <h1 className={styles.title}>Dashboard</h1>
-            <div>
-            <h2 className={styles.subtitle}>Announcement</h2>
-                {/* Announcement card */}
-                <div class="card" className={styles.card}>
-                {announcement.length === 0 ? (
-                    (announcement.map((item) => (
-                    <div key={item.id} className={styles.announcementItem}>
-                        <h3 className={styles.announcementTitle}>{item.title}</h3>
-                        <p className={styles.announcementContent}>{item.content}</p>
-                        <p className={styles.announcementDate}>{new Date(item.created_at).toLocaleDateString()}</p>
-                    </div>
-                    )))
-                ) : (
-                    <p className={styles.noAnnouncement}>Tidak ada announcement.</p>
-                )}
-                </div>
-            </div>
-            <button onClick={handleLogout} className={styles.logoutButton}>
-                Logout
-            </button>
-            </div>
+            <nav className={styles.navbar}>
+                <h1 className={styles.logo}>Dashboard</h1>
+                <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
+            </nav>
 
+            <main className={styles.mainContent}>
+                <h2 className={styles.welcomeMessage}>Selamat datang, {user.email}!</h2>    
+                {error && <p className={styles.error}>{error}</p>}
+                <section className={styles.announcementSection}>
+                    <h3 className={styles.sectionTitle}>Pengumuman Terbaru</h3>
+                    {announcement.length === 0 ? (
+                        <p className={styles.noAnnouncement}>Belum ada pengumuman.</p>
+                    ) : (
+                        <div className={styles.announcementList}>
+                            {announcement.map((item) => (
+                                <div key={item.id} className={styles.announcementCard}>
+                                    <h4 className={styles.announcementTitle}>{item.title}</h4>
+                                    <p className={styles.announcementContent}>{item.content}</p>
+                                    <p className={styles.announcementDate}>
+                                        {new Date(item.created_at).toLocaleDateString('id-ID', {
+                                            day: '2-digit',
+                                            month: 'long',
+                                            year: 'numeric',
+                                        })}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+            </main>
         </div>
     );
   }
